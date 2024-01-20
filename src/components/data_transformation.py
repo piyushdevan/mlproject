@@ -1,4 +1,8 @@
+import os
 import sys
+
+
+sys.path.append("C:\\Users\\PIYUSH KUMAR\\coding\\mlproject\\src")
 from dataclasses import dataclass
 
 import numpy as np
@@ -7,6 +11,10 @@ from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from DataTransformation import LowPassFilter, PrincipalComponentAnalysis
+from TemporalAbstraction import NumericalAbstraction
+from FrequencyAbstraction import FourierTransformation
+from sklearn.cluster import KMeans
 
 from src.exception import CustomException
 from src.logger import logging

@@ -7,8 +7,10 @@ sys.path.append("C:\\Users\\PIYUSH KUMAR\\coding\\mlproject\\src")
 from src.exception import CustomException
 from src.logger import logging
 import pandas as pd
+import numpy as np
 
 from sklearn.model_selection import train_test_split
+from src.utils import mark_outliers_chauvenet
 from dataclasses import dataclass
 
 from src.components.data_transformation import DataTransformation
@@ -36,6 +38,14 @@ class DataIngestion:
             os.makedirs((self.ingestion_config.data_path), exist_ok=True)
 
             df.to_csv((self.ingestion_config.raw_data_path), index=False, header=True)
+
+            outlier_columns = list(df.columns[:6])
+
+            for col in outlier_columns:
+                for label in df["label"].unique():
+                    dataset = mark_outliers_chauvenet(df[df["label"] == label], col)
+                    dataset.loc[dataset[col + "_outlier"], col] = np.nan
+                    df.loc[(df["label"] == label), col] = dataset[col]
 
             logging.info("Train test split initiated")
             train_set, test_set = train_test_split(df, test_size=0.2, random_state=42)
